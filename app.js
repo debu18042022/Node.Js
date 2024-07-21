@@ -45,14 +45,26 @@ const http = require("http");
 
 // ------ Creating a Simple Server in Node.js ------
 
-// Step 1 : Create a Server
-const server = http.createServer((request, response) => {
-  response.end("hello from the server!");
-  console.log("a new request received");
-  console.log(response);
+// // Step 1 : Create a Server
+// const server = http.createServer((request, response) => {
+//   response.end("hello from the server!");
+//   console.log("a new request received");
+//   console.log(response);
+// });
+
+// // Step 2 : Start the Server
+// server.listen("8000", "127.0.0.1", () => {
+//   console.log("server has started!");
+// });
+
+// ------ How to request and response works ------
+
+const html = fs.readFileSync('./Templates/index.html','utf-8');
+
+const Server = http.createServer((req, res) => {
+  res.end(html);
 });
 
-// Step 2 : Start the Server
-server.listen("8000", "127.0.0.1", () => {
-  console.log("server has started!");
+Server.listen("8000", "127.0.0.1", () => {
+  console.log("Server has started");
 });
