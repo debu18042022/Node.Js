@@ -1,0 +1,2 @@
+this is what i am going to write in the output.txt file by appending data2 and data3 files This is a content which we are going to read using Node.js  these are the content which are coming from the append file. at 
+ Sun Jul 21 2024 13:47:22 GMT+0530 (India Standard Time)
