@@ -45,24 +45,33 @@ const http = require("http");
 
 // ------ Creating a Simple Server in Node.js ------
 
-// // Step 1 : Create a Server
+// Step 1 : Create a Server
 // const server = http.createServer((request, response) => {
 //   response.end("hello from the server!");
 //   console.log("a new request received");
 //   console.log(response);
 // });
 
-// // Step 2 : Start the Server
+// Step 2 : Start the Server
 // server.listen("8000", "127.0.0.1", () => {
 //   console.log("server has started!");
 // });
 
 // ------ How to request and response works ------
 
-const html = fs.readFileSync('./Templates/index.html','utf-8');
+const html = fs.readFileSync("./Templates/index.html", "utf-8");
 
 const Server = http.createServer((req, res) => {
-  res.end(html);
+  let path = req.url;
+  if (path === "/" || path.toLocaleLowerCase() === "/home") {
+    res.end("you are in home page");
+  } else if (path.toLocaleLowerCase() === "/about") {
+    res.end("you are in about page");
+  } else if (path.toLocaleLowerCase() === "/contact") {
+    res.end("you are in contact page");
+  } else {
+    res.end("Error 404 : Page not found!");
+  }
 });
 
 Server.listen("8000", "127.0.0.1", () => {
