@@ -64,12 +64,28 @@ const html = fs.readFileSync("./Templates/index.html", "utf-8");
 const Server = http.createServer((req, res) => {
   let path = req.url;
   if (path === "/" || path.toLocaleLowerCase() === "/home") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "hello, World!",
+    });
     res.end(html.replace("{{%CONTENT%}}", "you are in home page"));
   } else if (path.toLocaleLowerCase() === "/about") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "Hello, World!",
+    });
     res.end(html.replace("{{%CONTENT%}}", "you are in about page"));
   } else if (path.toLocaleLowerCase() === "/contact") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "Hello,World!",
+    });
     res.end(html.replace("{{%CONTENT%}}", "you are in contact page"));
   } else {
+    res.writeHead(404, {
+      "Content-Type": "text/html",
+      "My-header": "Hello,World!",
+    });
     res.end(html.replace("{{%CONTENT%}}", "Error 404 : Page not found!"));
   }
 });
