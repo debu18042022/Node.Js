@@ -64,13 +64,13 @@ const html = fs.readFileSync("./Templates/index.html", "utf-8");
 const Server = http.createServer((req, res) => {
   let path = req.url;
   if (path === "/" || path.toLocaleLowerCase() === "/home") {
-    res.end("you are in home page");
+    res.end(html.replace("{{%CONTENT%}}", "you are in home page"));
   } else if (path.toLocaleLowerCase() === "/about") {
-    res.end("you are in about page");
+    res.end(html.replace("{{%CONTENT%}}", "you are in about page"));
   } else if (path.toLocaleLowerCase() === "/contact") {
-    res.end("you are in contact page");
+    res.end(html.replace("{{%CONTENT%}}", "you are in contact page"));
   } else {
-    res.end("Error 404 : Page not found!");
+    res.end(html.replace("{{%CONTENT%}}", "Error 404 : Page not found!"));
   }
 });
 
