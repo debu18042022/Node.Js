@@ -45,24 +45,57 @@ const http = require("http");
 
 // ------ Creating a Simple Server in Node.js ------
 
-// // Step 1 : Create a Server
+// Step 1 : Create a Server
 // const server = http.createServer((request, response) => {
 //   response.end("hello from the server!");
 //   console.log("a new request received");
 //   console.log(response);
 // });
 
-// // Step 2 : Start the Server
+// Step 2 : Start the Server
 // server.listen("8000", "127.0.0.1", () => {
 //   console.log("server has started!");
 // });
 
 // ------ How to request and response works ------
 
-const html = fs.readFileSync('./Templates/index.html','utf-8');
+const html = fs.readFileSync("./Templates/index.html", "utf-8");
+const products = JSON.parse(fs.readFileSync('./Data/products.json','utf-8'));
 
 const Server = http.createServer((req, res) => {
-  res.end(html);
+  let path = req.url;
+  if (path === "/" || path.toLocaleLowerCase() === "/home") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "hello, World!",
+    });
+    res.end(html.replace("{{%CONTENT%}}", "you are in home page"));
+  } else if (path.toLocaleLowerCase() === "/about") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "Hello, World!",
+    });
+    res.end(html.replace("{{%CONTENT%}}", "you are in about page"));
+  } else if (path.toLocaleLowerCase() === "/contact") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "Hello,World!",
+    });
+    res.end(html.replace("{{%CONTENT%}}", "you are in contact page"));
+  } else if (path.toLocaleLowerCase() === "/products") {
+    res.writeHead(200, {
+      "Content-Type": "text/html",
+      "My-Header": "Hello ,world!",
+    });
+    res.end("you are in products page");
+    console.log(products);
+  } else {
+    res.writeHead(404, {
+      "Content-Type": "text/html",
+      "My-header": "Hello,World!",
+    });
+    res.end(html.replace("{{%CONTENT%}}", "Error 404 : Page not found!"));
+  }
 });
 
 Server.listen("8000", "127.0.0.1", () => {
