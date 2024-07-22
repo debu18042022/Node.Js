@@ -60,7 +60,26 @@ const http = require("http");
 // ------ How to request and response works ------
 
 const html = fs.readFileSync("./Templates/index.html", "utf-8");
-const products = JSON.parse(fs.readFileSync('./Data/products.json','utf-8'));
+const products = JSON.parse(fs.readFileSync("./Data/products.json", "utf-8"));
+const productListHtml = fs.readFileSync(
+  "./Templates/product-list.html",
+  "utf-8"
+);
+// console.log(productListHtml);
+
+const productListArray = products.map((prod) => {
+  let output = productListHtml.replace("{{%IMAGE%}}", prod.productImage);
+  output = output.replace("{{%NAME%}}", prod.name);
+  output = output.replace("{{%MODELNAME%}}", prod.modeName);
+  output = output.replace("{{%MODELNO%}}", prod.modelNumber);
+  output = output.replace("{{%SIZE%}}", prod.size);
+  output = output.replace("{{%CAMERA%}}", prod.camera);
+  output = output.replace("{{%PRICE%}}", prod.price);
+  output = output.replace("{{%COLOR%}}", prod.color);
+  return output;
+});
+
+// console.log(productListArray);
 
 const Server = http.createServer((req, res) => {
   let path = req.url;
@@ -87,8 +106,8 @@ const Server = http.createServer((req, res) => {
       "Content-Type": "text/html",
       "My-Header": "Hello ,world!",
     });
-    res.end("you are in products page");
-    console.log(products);
+   res.end(html.replace("{{%CONTENT%}}",productListArray.join(",")));
+    // console.log(products);
   } else {
     res.writeHead(404, {
       "Content-Type": "text/html",
