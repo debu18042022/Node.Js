@@ -196,4 +196,4 @@ myEmitter.on('userCreated',(id,name)=>{
   console.log('a new user is added in the db');
 })
 
-myEmitter.emit("userCreated",10,sujeet);
+myEmitter.emit("userCreated",10,sujeet)
