@@ -2,6 +2,7 @@ const readline = require("readline");
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+const replaceHtml = require('./Modules/replaceHtml');
 
 // ------ how to take input from user/terminal and show in terminal ------
 
@@ -72,23 +73,6 @@ const productDetailsHtml = fs.readFileSync(
 );
 // console.log(products);
 // console.log(productListHtml);
-
-const replaceHtml = (template, product) => {
-  let output = template.replace("{{%IMAGE%}}", product.productImage);
-  output = output.replace("{{%NAME%}}", product.name);
-  output = output.replace("{{%MODELNAME%}}", product.modeName);
-  output = output.replace("{{%MODELNO%}}", product.modelNumber);
-  output = output.replace("{{%SIZE%}}", product.size);
-  output = output.replace("{{%CAMERA%}}", product.camera);
-  output = output.replace("{{%PRICE%}}", product.price);
-  output = output.replace("{{%COLOR%}}", product.color);
-  output = output.replace("{{%ID%}}", product.id);
-  output = output.replace("{{%ROM%}}", product.ROM);
-  output = output.replace("{{%DESC%}}", product.Description);
-  return output;
-};
-
-// console.log(productListArray);
 
 const Server = http.createServer((req, res) => {
   const { query, pathname: path } = url.parse(req.url, true);
