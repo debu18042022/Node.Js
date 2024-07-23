@@ -1,8 +1,13 @@
+// CORE MODULES
 const readline = require("readline");
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+// const events = require('events');
+
+// USER DEFINED MODULES
 const replaceHtml = require("./Modules/replaceHtml");
+const user = require('./Modules/user');
 
 // ------ how to take input from user/terminal and show in terminal ------
 
@@ -178,3 +183,17 @@ server.on("request", (req, res) => {
     res.end(html.replace("{{%CONTENT%}}", "Error 404 : Page not found!"));
   }
 });
+
+//Emitting & Handling Custom Events L-21
+
+const myEmitter = new user();
+
+myEmitter.on('userCreated',(id,name)=>{
+  console.log("a new user is created");
+})
+
+myEmitter.on('userCreated',(id,name)=>{
+  console.log('a new user is added in the db');
+})
+
+myEmitter.emit("userCreated",10,sujeet);
