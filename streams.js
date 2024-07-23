@@ -24,16 +24,29 @@ server.listen(8000, "127.0.0.1", () => {
 
 // SOLUTION:2 using readable and writeable stream
 
-server.on("request", (req, res) => {
-  let rs = fs.createReadStream("./Files/large-file.txt");
+// server.on("request", (req, res) => {
+//   let rs = fs.createReadStream("./Files/large-file.txt");
 
-  rs.on("data", (chunk) => {
-    res.write(chunk);
-  });
+//   rs.on("data", (chunk) => {
+//     console.log(chunk);
+//     res.write(chunk);
+//   });
 
-  rs.on("error", (error) => {
-    res.end(error);
-  });
+//   res.on("end", () => {
+//     res.end();
+//   });
 
-  res.end()
+//   rs.on("error", (error) => {
+//     res.end(error);
+//   });
+
+//   res.end();
+// });
+
+// SOLUTION:3 using pipe method basically to solve the problem of back pressure which was occuring in the solution 2 code
+
+server.on('request',(req,res)=>{
+    console.log(res);
+    let rs = fs.createReadStream('./Files/large-file.txt');
+    rs.pipe(res);
 });
