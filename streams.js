@@ -47,5 +47,5 @@ server.listen(8000, "127.0.0.1", () => {
 
 server.on('request',(req,res)=>{
     let rs = fs.createReadStream('./Files/large-file.txt');
-    rs.pipe(res);
+    rs.pipe(res)
 });
