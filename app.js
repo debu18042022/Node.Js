@@ -1,6 +1,7 @@
 const readline = require("readline");
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
 
 // ------ how to take input from user/terminal and show in terminal ------
 
@@ -65,8 +66,8 @@ const productListHtml = fs.readFileSync(
   "./Templates/product-list.html",
   "utf-8"
 );
+// console.log(products);
 // console.log(productListHtml);
-
 const productListArray = products.map((prod) => {
   let output = productListHtml.replace("{{%IMAGE%}}", prod.productImage);
   output = output.replace("{{%NAME%}}", prod.name);
@@ -76,13 +77,16 @@ const productListArray = products.map((prod) => {
   output = output.replace("{{%CAMERA%}}", prod.camera);
   output = output.replace("{{%PRICE%}}", prod.price);
   output = output.replace("{{%COLOR%}}", prod.color);
+  output = output.replace("{{%ID%}}", prod.id);
   return output;
 });
 
 // console.log(productListArray);
 
 const Server = http.createServer((req, res) => {
-  let path = req.url;
+  const { query, pathname: path } = url.parse(req.url, true);
+  // let path = req.url;
+  // console.log(path);
   if (path === "/" || path.toLocaleLowerCase() === "/home") {
     res.writeHead(200, {
       "Content-Type": "text/html",
@@ -102,12 +106,15 @@ const Server = http.createServer((req, res) => {
     });
     res.end(html.replace("{{%CONTENT%}}", "you are in contact page"));
   } else if (path.toLocaleLowerCase() === "/products") {
-    res.writeHead(200, {
-      "Content-Type": "text/html",
-      "My-Header": "Hello ,world!",
-    });
-   res.end(html.replace("{{%CONTENT%}}",productListArray.join(",")));
-    // console.log(products);
+    if (!query.id) {
+      res.writeHead(200, {
+        "Content-Type": "text/html",
+        "My-Header": "Hello ,world!",
+      });
+      res.end(html.replace("{{%CONTENT%}}", productListArray.join(",")));
+    } else {
+      res.end("this is a product with id :" + query.id);
+    }
   } else {
     res.writeHead(404, {
       "Content-Type": "text/html",
