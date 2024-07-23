@@ -1,0 +1,22 @@
+{
+  "name": "nodejsbasics",
+  "version": "1.0.0",
+  "description": "learn basics of node js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debu18042022/Node.Js.git"
+  },
+  "author": "sujeet sahu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/debu18042022/Node.Js/issues"
+  },
+  "homepage": "https://github.com/debu18042022/Node.Js#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
