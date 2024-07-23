@@ -22,7 +22,7 @@ server.listen(8000, "127.0.0.1", () => {
 //   });
 // });
 
-// // SOLUTION:2 using readable and writeable stream
+// SOLUTION:2 using readable and writeable stream
 
 // server.on("request", (req, res) => {
 //   let rs = fs.createReadStream("./Files/large-file.txt");
@@ -47,5 +47,5 @@ server.listen(8000, "127.0.0.1", () => {
 
 server.on('request',(req,res)=>{
     let rs = fs.createReadStream('./Files/large-file.txt');
-    rs.pipe(res)
+    rs.pipe(res);
 });
