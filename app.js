@@ -1,6 +1,8 @@
 const readline = require("readline");
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
+const replaceHtml = require('./Modules/replaceHtml');
 
 // ------ how to take input from user/terminal and show in terminal ------
 
@@ -60,10 +62,22 @@ const http = require("http");
 // ------ How to request and response works ------
 
 const html = fs.readFileSync("./Templates/index.html", "utf-8");
-const products = JSON.parse(fs.readFileSync('./Data/products.json','utf-8'));
+const products = JSON.parse(fs.readFileSync("./Data/products.json", "utf-8"));
+const productListHtml = fs.readFileSync(
+  "./Templates/product-list.html",
+  "utf-8"
+);
+const productDetailsHtml = fs.readFileSync(
+  "./Templates/product-details.html",
+  "utf-8"
+);
+// console.log(products);
+// console.log(productListHtml);
 
 const Server = http.createServer((req, res) => {
-  let path = req.url;
+  const { query, pathname: path } = url.parse(req.url, true);
+  // let path = req.url;
+  // console.log(path);
   if (path === "/" || path.toLocaleLowerCase() === "/home") {
     res.writeHead(200, {
       "Content-Type": "text/html",
@@ -83,12 +97,20 @@ const Server = http.createServer((req, res) => {
     });
     res.end(html.replace("{{%CONTENT%}}", "you are in contact page"));
   } else if (path.toLocaleLowerCase() === "/products") {
-    res.writeHead(200, {
-      "Content-Type": "text/html",
-      "My-Header": "Hello ,world!",
-    });
-    res.end("you are in products page");
-    console.log(products);
+    if (!query.id) {
+      let productListArray = products.map((prod) => {
+        return replaceHtml(productListHtml, prod);
+      });
+      res.writeHead(200, {
+        "Content-Type": "text/html",
+        "My-Header": "Hello ,world!",
+      });
+      res.end(html.replace("{{%CONTENT%}}", productListArray.join(",")));
+    } else {
+      const product = products[query.id];
+      const productDeatail = replaceHtml(productDetailsHtml, product);
+      res.end(html.replace("{{%CONTENT%}}", productDeatail));
+    }
   } else {
     res.writeHead(404, {
       "Content-Type": "text/html",
