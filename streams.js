@@ -46,6 +46,7 @@ server.listen(8000, "127.0.0.1", () => {
 // SOLUTION:3 using pipe method basically to solve the problem of back pressure which was occuring in the solution 2 code
 
 server.on('request',(req,res)=>{
+    console.log(res);
     let rs = fs.createReadStream('./Files/large-file.txt');
     rs.pipe(res);
 });
