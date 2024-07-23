@@ -66,20 +66,27 @@ const productListHtml = fs.readFileSync(
   "./Templates/product-list.html",
   "utf-8"
 );
+const productDetailsHtml = fs.readFileSync(
+  "./Templates/product-details.html",
+  "utf-8"
+);
 // console.log(products);
 // console.log(productListHtml);
-const productListArray = products.map((prod) => {
-  let output = productListHtml.replace("{{%IMAGE%}}", prod.productImage);
-  output = output.replace("{{%NAME%}}", prod.name);
-  output = output.replace("{{%MODELNAME%}}", prod.modeName);
-  output = output.replace("{{%MODELNO%}}", prod.modelNumber);
-  output = output.replace("{{%SIZE%}}", prod.size);
-  output = output.replace("{{%CAMERA%}}", prod.camera);
-  output = output.replace("{{%PRICE%}}", prod.price);
-  output = output.replace("{{%COLOR%}}", prod.color);
-  output = output.replace("{{%ID%}}", prod.id);
+
+const replaceHtml = (template, product) => {
+  let output = template.replace("{{%IMAGE%}}", product.productImage);
+  output = output.replace("{{%NAME%}}", product.name);
+  output = output.replace("{{%MODELNAME%}}", product.modeName);
+  output = output.replace("{{%MODELNO%}}", product.modelNumber);
+  output = output.replace("{{%SIZE%}}", product.size);
+  output = output.replace("{{%CAMERA%}}", product.camera);
+  output = output.replace("{{%PRICE%}}", product.price);
+  output = output.replace("{{%COLOR%}}", product.color);
+  output = output.replace("{{%ID%}}", product.id);
+  output = output.replace("{{%ROM%}}", product.ROM);
+  output = output.replace("{{%DESC%}}", product.Description);
   return output;
-});
+};
 
 // console.log(productListArray);
 
@@ -107,13 +114,18 @@ const Server = http.createServer((req, res) => {
     res.end(html.replace("{{%CONTENT%}}", "you are in contact page"));
   } else if (path.toLocaleLowerCase() === "/products") {
     if (!query.id) {
+      let productListArray = products.map((prod) => {
+        return replaceHtml(productListHtml, prod);
+      });
       res.writeHead(200, {
         "Content-Type": "text/html",
         "My-Header": "Hello ,world!",
       });
       res.end(html.replace("{{%CONTENT%}}", productListArray.join(",")));
     } else {
-      res.end("this is a product with id :" + query.id);
+      const product = products[query.id];
+      const productDeatail = replaceHtml(productDetailsHtml, product);
+      res.end(html.replace("{{%CONTENT%}}", productDeatail));
     }
   } else {
     res.writeHead(404, {
